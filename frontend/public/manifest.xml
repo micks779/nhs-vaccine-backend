@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xsi:type="MailApp">
+  <Id>6c3d44f9-61e2-4f2d-a3d2-f4c9bd723499</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>NHS Trust</ProviderName>
+  <DefaultLocale>en-GB</DefaultLocale>
+  <DisplayName DefaultValue="NHS Vaccination Status"/>
+  <Description DefaultValue="Check and update NHS vaccination status"/>
+  <IconUrl DefaultValue="https://localhost:3002/assets/logo_64x64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3002/assets/logo_80x80.png"/>
+  <SupportUrl DefaultValue="https://www.nhs.uk/support"/>
+  <AppDomains>
+    <AppDomain>https://localhost:3002</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://localhost:3002/index.html"/>
+        <RequestedHeight>450</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteMailbox</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.1">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadGroup">
+                <Label resid="groupLabel"/>
+                <Control xsi:type="Button" id="msgReadOpenPaneButton">
+                  <Label resid="openPaneButtonLabel"/>
+                  <Supertip>
+                    <Title resid="openPaneButtonTitle"/>
+                    <Description resid="openPaneButtonDesc"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-16"/>
+                    <bt:Image size="32" resid="icon-32"/>
+                    <bt:Image size="80" resid="icon-80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="taskPaneUrl"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon-16" DefaultValue="https://localhost:3002/assets/logo_16x16.png"/>
+        <bt:Image id="icon-32" DefaultValue="https://localhost:3002/assets/logo_32x32.png"/>
+        <bt:Image id="icon-80" DefaultValue="https://localhost:3002/assets/logo_80x80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="taskPaneUrl" DefaultValue="https://localhost:3002/index.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="NHS Vaccination"/>
+        <bt:String id="openPaneButtonLabel" DefaultValue="Check Status"/>
+        <bt:String id="openPaneButtonTitle" DefaultValue="NHS Vaccination Status"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="openPaneButtonDesc" DefaultValue="Check and update your NHS vaccination status"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>

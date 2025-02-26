@@ -35,6 +35,8 @@ function VaccinationForm() {
   const [error, setError] = useState(null);
   const [directorates, setDirectorates] = useState([]);
   const [organisations, setOrganisations] = useState([]);
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [lastResponse, setLastResponse] = useState(null);
   const [formData, setFormData] = useState({
     employee_number: "",
     directorate: "",
@@ -123,7 +125,12 @@ function VaccinationForm() {
         employee_number: staffDetails.employee_number,
         response: response
       });
-      await lookupStaffDetails(email);
+      setLastResponse(response);
+      setShowThankYou(true);
+      setTimeout(() => {
+        setShowThankYou(false);
+        lookupStaffDetails(email);
+      }, 5000); // Hide thank you message after 5 seconds
       setError(null);
     } catch (error) {
       setError("Failed to update vaccination status");
@@ -137,6 +144,33 @@ function VaccinationForm() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const ThankYouMessage = () => {
+    if (!showThankYou) return null;
+
+    const messageStyle = {
+      padding: "20px",
+      borderRadius: "8px",
+      marginBottom: "16px",
+      backgroundColor: lastResponse === "yes" ? nhsColors.green : nhsColors.blue,
+      color: nhsColors.white
+    };
+
+    const message = lastResponse === "yes" 
+      ? "Thank you for completing the form and protecting your colleagues and family. Your contribution helps create a safer workplace for everyone."
+      : "Thank you for completing the form. Did you know? The flu causes an average of 11,000 deaths annually in England. Vaccination remains one of our best defenses against severe illness.";
+
+    return (
+      <Box style={messageStyle}>
+        <Typography variant="h6" style={{ marginBottom: "8px" }}>
+          Thank You!
+        </Typography>
+        <Typography variant="body1">
+          {message}
+        </Typography>
+      </Box>
+    );
   };
 
   if (loading) {
@@ -256,6 +290,7 @@ function VaccinationForm() {
         <Typography variant="h6" style={{ color: nhsColors.blue, marginBottom: 16 }}>
           NHS Vaccination Status
         </Typography>
+        {showThankYou && <ThankYouMessage />}
         {staffDetails && (
           <>
             <Box mb={2}>
@@ -303,7 +338,8 @@ function VaccinationForm() {
                 fullWidth
                 style={{ 
                   backgroundColor: nhsColors.green,
-                  marginBottom: 8
+                  marginBottom: 8,
+                  color: nhsColors.white
                 }}
                 onClick={() => updateVaccinationStatus("yes")}
               >
@@ -313,7 +349,8 @@ function VaccinationForm() {
                 variant="contained"
                 fullWidth
                 style={{ 
-                  backgroundColor: nhsColors.red
+                  backgroundColor: nhsColors.red,
+                  color: nhsColors.white
                 }}
                 onClick={() => updateVaccinationStatus("no")}
               >
